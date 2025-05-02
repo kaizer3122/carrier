@@ -10,10 +10,6 @@ app.secret_key = 'your_secret_key'
 CSV_FILE = os.path.join(os.path.dirname(__file__), 'responses.csv')
 VOICE_FILE = os.path.join('static', 'voice.mp3')
 
-# Create static folder if it doesn't exist
-if not os.path.exists('static'):
-    os.makedirs('static')
-
 @app.route('/', methods=['GET', 'POST'])
 def career_form():
     if request.method == 'POST':
@@ -103,5 +99,8 @@ def get_career_suggestions(interests):
     return suggestions
 
 if __name__ == '__main__':
+    if not os.path.exists('static'):
+        os.makedirs('static')
+
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
