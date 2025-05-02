@@ -14,6 +14,14 @@ VOICE_FILE = os.path.join('static', 'voice.mp3')
 def career_form():
     if request.method == 'POST':
         name = request.form.get('name', '').strip()
+        age = request.form.get('age', '').strip()
+
+        # Validate the age input
+        if not age.isdigit():
+            flash("Age must be a valid number!", "error")
+            return redirect(url_for('career_form'))
+        age = int(age)  # Convert age to integer
+        
         drawing = request.form.get('drawing', 'No')
         dancing = request.form.get('dancing', 'No')
         singing = request.form.get('singing', 'No')
@@ -25,7 +33,7 @@ def career_form():
             flash("Name is required!", "error")
             return redirect(url_for('career_form'))
 
-        save_to_csv([name, drawing, dancing, singing, coding, sports, photography])
+        save_to_csv([name, age, drawing, dancing, singing, coding, sports, photography])
 
         interests = {
             "drawing": drawing == "Yes",
@@ -38,7 +46,7 @@ def career_form():
 
         suggestions = get_career_suggestions(interests)
 
-        message = f"Thanks {name}, based on your interests, you could become: {', '.join(suggestions)}!"
+        message = f"Thanks {name}, based on your interests, you could become: {', '.join(suggestions)}! Age: {age}"
         flash(message, "success")
 
         tts = gTTS(message)
@@ -63,7 +71,7 @@ def save_to_csv(data):
     with open(CSV_FILE, mode='a', newline='') as file:
         writer = csv.writer(file)
         if not file_exists:
-            writer.writerow(['Name', 'Drawing', 'Dancing', 'Singing', 'Coding', 'Sports', 'Photographer'])
+            writer.writerow(['Name', 'Age', 'Drawing', 'Dancing', 'Singing', 'Coding', 'Sports', 'Photographer'])
         writer.writerow(data)
 
 def get_career_suggestions(interests):
