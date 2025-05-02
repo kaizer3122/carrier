@@ -7,14 +7,16 @@ import os
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 
-# Define file paths for CSV and voice file
 CSV_FILE = os.path.join(os.path.dirname(__file__), 'responses.csv')
 VOICE_FILE = os.path.join('static', 'voice.mp3')
+
+# Create static folder if it doesn't exist
+if not os.path.exists('static'):
+    os.makedirs('static')
 
 @app.route('/', methods=['GET', 'POST'])
 def career_form():
     if request.method == 'POST':
-        # Get form data
         name = request.form.get('name', '').strip()
         age = request.form.get('age', '').strip()
 
@@ -24,7 +26,6 @@ def career_form():
             return redirect(url_for('career_form'))
         age = int(age)  # Convert age to integer
         
-        # Get interests from form
         drawing = request.form.get('drawing', 'No')
         dancing = request.form.get('dancing', 'No')
         singing = request.form.get('singing', 'No')
@@ -32,15 +33,12 @@ def career_form():
         sports = request.form.get('sports', 'No')
         photography = request.form.get('photographer', 'No')
 
-        # Check if name is provided
         if not name:
             flash("Name is required!", "error")
             return redirect(url_for('career_form'))
 
-        # Save data to CSV file
         save_to_csv([name, age, drawing, dancing, singing, coding, sports, photography])
 
-        # Determine career suggestions based on interests
         interests = {
             "drawing": drawing == "Yes",
             "dancing": dancing == "Yes",
@@ -49,13 +47,12 @@ def career_form():
             "sports": sports == "Yes",
             "photographer": photography == "Yes"
         }
+
         suggestions = get_career_suggestions(interests)
 
-        # Create success message
         message = f"Thanks {name}, based on your interests, you could become: {', '.join(suggestions)}! Age: {age}"
         flash(message, "success")
 
-        # Convert message to speech and save it
         tts = gTTS(message)
         tts.save(VOICE_FILE)
 
@@ -73,7 +70,6 @@ def show_responses():
             responses = list(reader)
     return render_template('responses.html', responses=responses)
 
-# Function to save responses to a CSV file
 def save_to_csv(data):
     file_exists = os.path.isfile(CSV_FILE)
     with open(CSV_FILE, mode='a', newline='') as file:
@@ -82,7 +78,6 @@ def save_to_csv(data):
             writer.writerow(['Name', 'Age', 'Drawing', 'Dancing', 'Singing', 'Coding', 'Sports', 'Photographer'])
         writer.writerow(data)
 
-# Function to get career suggestions based on interests
 def get_career_suggestions(interests):
     suggestions = []
     if interests["drawing"] and interests["coding"]:
@@ -108,8 +103,5 @@ def get_career_suggestions(interests):
     return suggestions
 
 if __name__ == '__main__':
-    if not os.path.exists('static'):
-        os.makedirs('static')
-
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
