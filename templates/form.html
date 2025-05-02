@@ -5,117 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Career Form</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        /* Scroll progress bar */
-        #scrollProgress {
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 4px;
-            background: #00796b;
-            width: 0%;
-            z-index: 9999;
-            transition: width 0.25s ease-out;
-        }
-
-        /* Back to top button */
-        #backToTop {
-            position: fixed;
-            bottom: 30px;
-            right: 20px;
-            background-color: #00796b;
-            color: white;
-            border: none;
-            padding: 10px 14px;
-            border-radius: 50%;
-            font-size: 18px;
-            display: none;
-            z-index: 9999;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
-
-        #backToTop:hover {
-            transform: scale(1.1);
-        }
-
-        /* Character counter styling */
-        .char-count {
-            font-size: 13px;
-            text-align: right;
-            margin-top: 4px;
-            color: #00796b;
-        }
-
-        /* Add animations */
-        .container .floating-label,
-        .checkbox-label,
-        button[type="submit"] {
-            animation: bounceIn 0.8s ease forwards;
-            opacity: 0;
-        }
-
-        .floating-label:nth-child(1) { animation-delay: 0.3s; }
-        .floating-label:nth-child(2) { animation-delay: 0.5s; }
-        .checkbox-label:nth-child(n+3) { animation-delay: calc(0.5s + (var(--i, 1) * 0.1s)); }
-        button[type="submit"] { animation-delay: 1.5s; }
-
-        @keyframes bounceIn {
-            0% { opacity: 0; transform: translateY(40px); }
-            60% { opacity: 1; transform: translateY(-10px); }
-            100% { transform: translateY(0); }
-        }
-    </style>
 </head>
 <body>
-    <!-- Scroll Progress Bar -->
     <div id="scrollProgress"></div>
 
-    <!-- Back to Top Button -->
     <button id="backToTop" title="Go to top">↑</button>
 
-    <div class="container">
-        <form method="POST">
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" required>
-            <div id="nameCharCount" class="char-count"></div>
+    <form method="POST">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br><br>
+        
+        <label for="age">Age:</label>
+        <input type="number" id="age" name="age" required><br><br>
 
-            <label for="age">Age:</label>
-            <input type="number" id="age" name="age" required>
+        <label for="drawing">Drawing:</label>
+        <input type="checkbox" id="drawing" name="drawing" value="Yes"><br><br>
 
-            <div class="interests">
-                <label>
-                    <input type="checkbox" name="drawing" value="Yes"> Drawing
-                </label>
-                <label>
-                    <input type="checkbox" name="dancing" value="Yes"> Dancing
-                </label>
-                <label>
-                    <input type="checkbox" name="singing" value="Yes"> Singing
-                </label>
-                <label>
-                    <input type="checkbox" name="coding" value="Yes"> Coding
-                </label>
-                <label>
-                    <input type="checkbox" name="sports" value="Yes"> Sports
-                </label>
-                <label>
-                    <input type="checkbox" name="photographer" value="Yes"> Photography
-                </label>
-            </div>
+        <label for="dancing">Dancing:</label>
+        <input type="checkbox" id="dancing" name="dancing" value="Yes"><br><br>
 
-            <button type="submit">Submit</button>
-        </form>
-    </div>
+        <label for="singing">Singing:</label>
+        <input type="checkbox" id="singing" name="singing" value="Yes"><br><br>
 
+        <label for="coding">Coding:</label>
+        <input type="checkbox" id="coding" name="coding" value="Yes"><br><br>
+
+        <label for="sports">Sports:</label>
+        <input type="checkbox" id="sports" name="sports" value="Yes"><br><br>
+
+        <label for="photographer">Photography:</label>
+        <input type="checkbox" id="photographer" name="photographer" value="Yes"><br><br>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         // Scroll progress bar
         window.addEventListener('scroll', () => {
             const scrolled = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
             document.getElementById('scrollProgress').style.width = scrolled + '%';
 
-            // Back to top button visibility
+            // Back to top toggle
             const topBtn = document.getElementById("backToTop");
             topBtn.style.display = (window.scrollY > 300) ? "block" : "none";
         });
@@ -124,13 +55,6 @@
         document.getElementById("backToTop").onclick = () => {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         };
-
-        // Character counter for name input
-        const nameInput = document.getElementById('name');
-        const charCount = document.getElementById('nameCharCount');
-        nameInput.addEventListener('input', () => {
-            charCount.textContent = `${nameInput.value.length} characters`;
-        });
     </script>
 </body>
 </html>
