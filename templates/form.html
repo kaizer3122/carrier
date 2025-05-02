@@ -1,60 +1,119 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Career Form</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <meta charset="utf-8">
+  <title>Animated Career Form</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <style>
+    /* Basic styles for your form */
+    body {
+      font-family: 'Arial', sans-serif;
+      background: #f4f4f4;
+      padding: 20px;
+    }
+    .container {
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+      max-width: 500px;
+      margin: 0 auto;
+    }
+    h2 {
+      text-align: center;
+    }
+    .floating-label {
+      position: relative;
+      margin-bottom: 25px;
+    }
+    .floating-label input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .floating-label label {
+      position: absolute;
+      top: 12px;
+      left: 15px;
+      font-size: 16px;
+      color: #aaa;
+      transition: 0.3s;
+    }
+    .floating-label input:focus + label,
+    .floating-label input:not(:placeholder-shown) + label {
+      top: -8px;
+      font-size: 12px;
+      color: #00796b;
+    }
+    .checkbox-label {
+      display: block;
+      margin: 10px 0;
+    }
+    button {
+      width: 100%;
+      padding: 15px;
+      border: none;
+      background-color: #00796b;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    button:hover {
+      background-color: #004d40;
+    }
+    .message {
+      padding: 10px;
+      margin-top: 20px;
+      border-radius: 5px;
+      text-align: center;
+    }
+    .success {
+      background-color: #d4edda;
+      color: #155724;
+    }
+    .error {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+  </style>
 </head>
 <body>
-    <div id="scrollProgress"></div>
 
-    <button id="backToTop" title="Go to top">↑</button>
+<div class="container">
+  <h2>Career Interest Form</h2>
 
-    <form method="POST">
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required><br><br>
-        
-        <label for="age">Age:</label>
-        <input type="number" id="age" name="age" required><br><br>
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="message {{ category }}">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
 
-        <label for="drawing">Drawing:</label>
-        <input type="checkbox" id="drawing" name="drawing" value="Yes"><br><br>
+  <form method="post">
+    <div class="floating-label">
+      <input type="text" id="name" name="name" placeholder=" " required>
+      <label for="name">Your Name</label>
+    </div>
 
-        <label for="dancing">Dancing:</label>
-        <input type="checkbox" id="dancing" name="dancing" value="Yes"><br><br>
+    <div class="floating-label">
+      <input type="text" id="age" name="age" placeholder=" " required>
+      <label for="age">Your Age</label>
+    </div>
 
-        <label for="singing">Singing:</label>
-        <input type="checkbox" id="singing" name="singing" value="Yes"><br><br>
+    <label>Select your interests:</label><br>
+    <label class="checkbox-label"><input type="checkbox" name="drawing" value="Yes">Drawing</label>
+    <label class="checkbox-label"><input type="checkbox" name="dancing" value="Yes">Dancing</label>
+    <label class="checkbox-label"><input type="checkbox" name="singing" value="Yes">Singing</label>
+    <label class="checkbox-label"><input type="checkbox" name="coding" value="Yes">Coding</label>
+    <label class="checkbox-label"><input type="checkbox" name="sports" value="Yes">Sports</label>
+    <label class="checkbox-label"><input type="checkbox" name="photographer" value="Yes">Photographer</label><br>
 
-        <label for="coding">Coding:</label>
-        <input type="checkbox" id="coding" name="coding" value="Yes"><br><br>
+    <button type="submit">Submit</button>
+  </form>
+</div>
 
-        <label for="sports">Sports:</label>
-        <input type="checkbox" id="sports" name="sports" value="Yes"><br><br>
-
-        <label for="photographer">Photography:</label>
-        <input type="checkbox" id="photographer" name="photographer" value="Yes"><br><br>
-
-        <button type="submit">Submit</button>
-    </form>
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        // Scroll progress bar
-        window.addEventListener('scroll', () => {
-            const scrolled = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
-            document.getElementById('scrollProgress').style.width = scrolled + '%';
-
-            // Back to top toggle
-            const topBtn = document.getElementById("backToTop");
-            topBtn.style.display = (window.scrollY > 300) ? "block" : "none";
-        });
-
-        // Back to top action
-        document.getElementById("backToTop").onclick = () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        };
-    </script>
 </body>
 </html>
