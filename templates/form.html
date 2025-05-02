@@ -1,115 +1,136 @@
-<!-- Scroll Progress Bar -->
-<div id="scrollProgress"></div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Career Form</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Scroll progress bar */
+        #scrollProgress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: #00796b;
+            width: 0%;
+            z-index: 9999;
+            transition: width 0.25s ease-out;
+        }
 
-<!-- Back to Top Button -->
-<button id="backToTop" title="Go to top">↑</button>
+        /* Back to top button */
+        #backToTop {
+            position: fixed;
+            bottom: 30px;
+            right: 20px;
+            background-color: #00796b;
+            color: white;
+            border: none;
+            padding: 10px 14px;
+            border-radius: 50%;
+            font-size: 18px;
+            display: none;
+            z-index: 9999;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
 
-<style>
-  #scrollProgress {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 4px;
-    background: #00796b;
-    width: 0%;
-    z-index: 9999;
-    transition: width 0.25s ease-out;
-  }
+        #backToTop:hover {
+            transform: scale(1.1);
+        }
 
-  #backToTop {
-    position: fixed;
-    bottom: 30px;
-    right: 20px;
-    background-color: #00796b;
-    color: white;
-    border: none;
-    padding: 10px 14px;
-    border-radius: 50%;
-    font-size: 18px;
-    display: none;
-    z-index: 9999;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    cursor: pointer;
-    transition: transform 0.3s ease;
-  }
+        /* Character counter styling */
+        .char-count {
+            font-size: 13px;
+            text-align: right;
+            margin-top: 4px;
+            color: #00796b;
+        }
 
-  #backToTop:hover {
-    transform: scale(1.1);
-  }
+        /* Add animations */
+        .container .floating-label,
+        .checkbox-label,
+        button[type="submit"] {
+            animation: bounceIn 0.8s ease forwards;
+            opacity: 0;
+        }
 
-  .container .floating-label,
-  .checkbox-label,
-  button[type="submit"] {
-    animation: bounceIn 0.8s ease forwards;
-    opacity: 0;
-  }
+        .floating-label:nth-child(1) { animation-delay: 0.3s; }
+        .floating-label:nth-child(2) { animation-delay: 0.5s; }
+        .checkbox-label:nth-child(n+3) { animation-delay: calc(0.5s + (var(--i, 1) * 0.1s)); }
+        button[type="submit"] { animation-delay: 1.5s; }
 
-  .floating-label:nth-child(1) { animation-delay: 0.3s; }
-  .floating-label:nth-child(2) { animation-delay: 0.5s; }
-  .checkbox-label:nth-child(n+3) { animation-delay: calc(0.5s + (var(--i, 1) * 0.1s)); }
-  button[type="submit"] { animation-delay: 1.5s; }
+        @keyframes bounceIn {
+            0% { opacity: 0; transform: translateY(40px); }
+            60% { opacity: 1; transform: translateY(-10px); }
+            100% { transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Scroll Progress Bar -->
+    <div id="scrollProgress"></div>
 
-  @keyframes bounceIn {
-    0% { opacity: 0; transform: translateY(40px); }
-    60% { opacity: 1; transform: translateY(-10px); }
-    100% { transform: translateY(0); }
-  }
+    <!-- Back to Top Button -->
+    <button id="backToTop" title="Go to top">↑</button>
 
-  .char-count {
-    font-size: 13px;
-    text-align: right;
-    margin-top: 4px;
-    color: #00796b;
-  }
+    <div class="container">
+        <form method="POST">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+            <div id="nameCharCount" class="char-count"></div>
 
-  body.dark .char-count {
-    color: #80cbc4;
-  }
-</style>
+            <label for="age">Age:</label>
+            <input type="number" id="age" name="age" required>
 
-<script>
-  // Scroll progress bar
-  window.addEventListener('scroll', () => {
-    const scrolled = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
-    document.getElementById('scrollProgress').style.width = scrolled + '%';
+            <div class="interests">
+                <label>
+                    <input type="checkbox" name="drawing" value="Yes"> Drawing
+                </label>
+                <label>
+                    <input type="checkbox" name="dancing" value="Yes"> Dancing
+                </label>
+                <label>
+                    <input type="checkbox" name="singing" value="Yes"> Singing
+                </label>
+                <label>
+                    <input type="checkbox" name="coding" value="Yes"> Coding
+                </label>
+                <label>
+                    <input type="checkbox" name="sports" value="Yes"> Sports
+                </label>
+                <label>
+                    <input type="checkbox" name="photographer" value="Yes"> Photography
+                </label>
+            </div>
 
-    // Back to top toggle
-    const topBtn = document.getElementById("backToTop");
-    topBtn.style.display = (window.scrollY > 300) ? "block" : "none";
-  });
+            <button type="submit">Submit</button>
+        </form>
+    </div>
 
-  // Back to top action
-  document.getElementById("backToTop").onclick = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+    <script>
+        // Scroll progress bar
+        window.addEventListener('scroll', () => {
+            const scrolled = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+            document.getElementById('scrollProgress').style.width = scrolled + '%';
 
-  // Parallax particles
-  document.addEventListener('mousemove', e => {
-    const x = (e.clientX / window.innerWidth - 0.5) * 20;
-    const y = (e.clientY / window.innerHeight - 0.5) * 20;
-    document.querySelector('.bg-particles').style.transform = `translate(${x}px, ${y}px)`;
-  });
+            // Back to top button visibility
+            const topBtn = document.getElementById("backToTop");
+            topBtn.style.display = (window.scrollY > 300) ? "block" : "none";
+        });
 
-  // Character counter
-  const nameInput = document.getElementById('name');
-  const charCount = document.createElement('div');
-  charCount.className = 'char-count';
-  nameInput.parentElement.appendChild(charCount);
-  nameInput.addEventListener('input', () => {
-    charCount.textContent = `${nameInput.value.length} characters`;
-  });
+        // Back to top action
+        document.getElementById("backToTop").onclick = () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
 
-  // Add celebration sound
-  document.addEventListener('DOMContentLoaded', () => {
-    const success = document.querySelector('.message.success');
-    if (success) {
-      const sound = new Audio('{{ url_for("static", filename="celebration.mp3") }}');
-      sound.play();
-    }
-  });
-
-  // Bounce delay for checkboxes
-  document.querySelectorAll('.checkbox-label').forEach((el, i) => {
-    el.style.setProperty('--i', i);
-  });
-</script>
+        // Character counter for name input
+        const nameInput = document.getElementById('name');
+        const charCount = document.getElementById('nameCharCount');
+        nameInput.addEventListener('input', () => {
+            charCount.textContent = `${nameInput.value.length} characters`;
+        });
+    </script>
+</body>
+</html>
